@@ -57,7 +57,7 @@ import com.dropbox.client2.exception.DropboxUnlinkedException;
  * control for an app that downloads a file from Dropbox.
  */
 
-public class DownloadRandomPicture extends AsyncTask<Void, Long, Boolean> {
+public class DownloadPicture extends AsyncTask<Void, Long, Boolean> {
 
 
     private Context mContext;
@@ -77,7 +77,7 @@ public class DownloadRandomPicture extends AsyncTask<Void, Long, Boolean> {
     // won't be able to use this code for two simultaneous downloads.
     private final static String IMAGE_FILE_NAME = "dbroulette.png";
 
-    public DownloadRandomPicture(Context context, DropboxAPI<?> api,
+    public DownloadPicture(Context context, DropboxAPI<?> api,
             String dropboxPath, ImageView view) {
         // We set the context this way so we don't accidentally leak activities
         mContext = context.getApplicationContext();
