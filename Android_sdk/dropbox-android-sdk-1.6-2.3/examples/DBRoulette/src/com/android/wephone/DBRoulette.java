@@ -37,6 +37,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -186,20 +187,18 @@ public class DBRoulette extends Activity {
                 intent.setType("image/* ,video/*");
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent,"Select Pictures"), GALLERY_PICTURE); 
                 
                 // This is not the right way to do this, but for some reason, having
                 // it store it in
                 // MediaStore.Images.Media.EXTERNAL_CONTENT_URI isn't working right.
-
                 Date date = new Date();
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd-kk-mm-ss", Locale.US);
 
                 //String outPath = "/mnt/sdcard/" + filename;
-//                File outFile = new File(outPath);
-//                FileInputStream fis = new FileInputStream(outFile);
-//                mRequest = mApi.putFileOverwriteRequest("/"+filename, fis, outFile.length(),null);
-//                
+               // File outFile = new File(outPath);
+               //FileInputStream fis = new FileInputStream(outFile);
+               //mRequest = mApi.putFileOverwriteRequest("/"+filename, fis, outFile.length(),null);
+                
                 String newPicFile = df.format(date) + ".jpg";
                 String outPath = new File(Environment.getExternalStorageDirectory(), newPicFile).getPath();
                 File outFile = new File(outPath);
@@ -209,7 +208,7 @@ public class DBRoulette extends Activity {
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, outuri);
                 Log.i(TAG, "Importing New Picture: " + mCameraFileName);
                 try {
-                    startActivityForResult(intent, NEW_PICTURE);
+                    startActivityForResult(Intent.createChooser(intent,"Please select:"), GALLERY_PICTURE); 
                 } catch (ActivityNotFoundException e) {
                     showToast("There doesn't seem to be a camera.");
                 }
@@ -291,16 +290,40 @@ public class DBRoulette extends Activity {
                 Uri uri = null;
                 if (data != null) {
                     uri = data.getData();
-                }
-                if (uri == null && mGalleryFileName != null) {
-                    uri = Uri.fromFile(new File(mGalleryFileName));
-                }
-                File file = new File(mGalleryFileName);
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                    Cursor cursor = getContentResolver().query(uri, filePathColumn, null, null, null);
+                    cursor.moveToFirst();
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    String picturePath = cursor.getString(columnIndex);
+                    for (String string : filePathColumn) {
+                    	File file = new File(string);
+                    	UploadPicture upload = new UploadPicture(this, mApi, PHOTO_DIR, file);
+                    	upload.execute();
+					}
+                    cursor.close();
 
-                if (uri != null) {
-                    UploadPicture upload = new UploadPicture(this, mApi, PHOTO_DIR, file);
-                    upload.execute();
                 }
+                /*
+                Uri selectedImage = data.getData();
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+                cursor.moveToFirst();
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                String picturePath = cursor.getString(columnIndex);
+                cursor.close();
+                ImageView imageView = (ImageView) findViewById(R.id.image);
+                imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                */
+//                if (uri == null && mGalleryFileName != null) {
+//                    uri = Uri.fromFile(new File(mGalleryFileName));
+//                }
+                
+                File file = new File(mGalleryFileName);
+                if (uri != null) {                	
+                	   UploadPicture upload = new UploadPicture(this, mApi, PHOTO_DIR, file);
+                	   upload.execute();
+                   }
+                
             } else {
                 Log.w(TAG, "Unknown Activity Result from mediaImport: "
                         + resultCode);
