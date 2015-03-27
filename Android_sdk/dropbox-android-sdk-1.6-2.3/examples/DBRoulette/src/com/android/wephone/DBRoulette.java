@@ -69,8 +69,8 @@ public class DBRoulette extends Activity {
     // Note that this is a really insecure way to do this, and you shouldn't
     // ship code which contains your key & secret in such an obvious way.
     // Obfuscation is good.
-    private static final String APP_KEY =    "mz8459n9xekzmvz";
-    private static final String APP_SECRET = "11enl68c1x35nvk";
+    private static final String APP_KEY =    "c3ni1eiw3ackhz5";
+    private static final String APP_SECRET = "io385nt1sgfs2qb";
 
     ///////////////////////////////////////////////////////////////////////////
     //                      End app-specific settings.                       //
