@@ -303,17 +303,7 @@ public class DBRoulette extends Activity {
                     cursor.close();
 
                 }
-                /*
-                Uri selectedImage = data.getData();
-                String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-                cursor.moveToFirst();
-                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                String picturePath = cursor.getString(columnIndex);
-                cursor.close();
-                ImageView imageView = (ImageView) findViewById(R.id.image);
-                imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                */
+           
 //                if (uri == null && mGalleryFileName != null) {
 //                    uri = Uri.fromFile(new File(mGalleryFileName));
 //                }
