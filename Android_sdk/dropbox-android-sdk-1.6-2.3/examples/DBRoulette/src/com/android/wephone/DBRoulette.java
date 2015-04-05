@@ -66,7 +66,6 @@ public class DBRoulette extends Activity {
 	//                      Your app-specific settings.                      //
 	///////////////////////////////////////////////////////////////////////////
 
-<<<<<<< HEAD
     // Replace this with your app key and secret assigned by Dropbox.
     // Note that this is a really insecure way to do this, and you shouldn't
     // ship code which contains your key & secret in such an obvious way.
