@@ -30,6 +30,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -76,7 +77,6 @@ public class DownloadPicture extends AsyncTask<Void, Long, Boolean> {
     // Note that, since we use a single file name here for simplicity, you
     // won't be able to use this code for two simultaneous downloads.
     private final static String IMAGE_FILE_NAME = "dbroulette.png";
-
     public DownloadPicture(Context context, DropboxAPI<?> api,
             String dropboxPath, ImageView view) {
         // We set the context this way so we don't accidentally leak activities
@@ -87,7 +87,7 @@ public class DownloadPicture extends AsyncTask<Void, Long, Boolean> {
         mView = view;
 
         mDialog = new ProgressDialog(context);
-        mDialog.setMessage("Downloading Image");
+        mDialog.setMessage("Next pic is on the way :))");
         mDialog.setButton(ProgressDialog.BUTTON_POSITIVE, "Cancel", new OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 mCanceled = true;
@@ -103,8 +103,8 @@ public class DownloadPicture extends AsyncTask<Void, Long, Boolean> {
                 }
             }
         });
-
-        mDialog.show();
+        
+  //      mDialog.show();
     }
 
     @Override
@@ -141,9 +141,17 @@ public class DownloadPicture extends AsyncTask<Void, Long, Boolean> {
                 mErrorMsg = "No pictures in that directory";
                 return false;
             }
-
+//            Collections.sort(thumbs, new Comparator<MyObject>() {
+//            	  public int compare(MyObject o1, MyObject o2) {
+//            	      if (o1.getDateTime() == null || o2.getDateTime() == null)
+//            	        return 0;
+//            	      return o1.getDateTime().compareTo(o2.getDateTime());
+//            	  }
+//            	});
+//!!!!!!!!!!!!!!!!!! HERE I NEED TO PICK A SPECIFIC PICTURE AND CHAGE WHAT THEY WROTE !!!!!!!!!!!!!!!!!!!!!1
             // Now pick a random one
             int index = (int)(Math.random() * thumbs.size());
+//            int index = 0;
             Entry ent = thumbs.get(index);
             String path = ent.path;
             mFileLen = ent.bytes;
