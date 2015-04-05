@@ -42,13 +42,6 @@
 		      android:layout_height="wrap_content"
 	          android:layout_weight="1"
 		      />
-		     <Button 
-		      android:id="@+id/running_slides_button" 
-		      android:text="Slides" 
-		      android:layout_width="fill_parent"
-		      android:layout_height="wrap_content"
-	          android:layout_weight="1"
-		      />
 		    <Button 
 		      android:id="@+id/photo_button" 
 		      android:text="Camera" 
