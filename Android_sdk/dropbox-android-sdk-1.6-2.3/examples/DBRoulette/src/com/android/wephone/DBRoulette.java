@@ -92,6 +92,7 @@ public class DBRoulette extends Activity {
     private LinearLayout mDisplay;
     private Button mCamera;
     private Button mGallery;
+    private Button mSlides;
     private Button mRoulette;
 
     private ImageView mImage;
