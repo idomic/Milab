@@ -184,20 +184,14 @@ public class DBRoulette extends Activity {
             	
                 // Picture from gallery
                 Intent intent = new Intent();
-                intent.setType("image/* ,video/*");
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                
-                // This is not the right way to do this, but for some reason, having
-                // it store it in
-                // MediaStore.Images.Media.EXTERNAL_CONTENT_URI isn't working right.
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        
+               
                 Date date = new Date();
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd-kk-mm-ss", Locale.US);
 
-                //String outPath = "/mnt/sdcard/" + filename;
-               // File outFile = new File(outPath);
-               //FileInputStream fis = new FileInputStream(outFile);
-               //mRequest = mApi.putFileOverwriteRequest("/"+filename, fis, outFile.length(),null);
                 
                 String newPicFile = df.format(date) + ".jpg";
                 String outPath = new File(Environment.getExternalStorageDirectory(), newPicFile).getPath();
@@ -294,25 +288,16 @@ public class DBRoulette extends Activity {
                     Cursor cursor = getContentResolver().query(uri, filePathColumn, null, null, null);
                     cursor.moveToFirst();
                     int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    String picturePath = cursor.getString(columnIndex);
-                    for (String string : filePathColumn) {
-                    	File file = new File(string);
-                    	UploadPicture upload = new UploadPicture(this, mApi, PHOTO_DIR, file);
+                    for (int i = 0; i < filePathColumn.length; i++) {
+                        String picturePath = cursor.getString(columnIndex);
+                        int end = picturePath.lastIndexOf("/");
+                        String folderHeader = picturePath.substring(0, (end + 1));
+                    	File file = new File(picturePath);
+                    	UploadPicture upload = new UploadPicture(DBRoulette.this, mApi, PHOTO_DIR, file);
                     	upload.execute();
 					}
                     cursor.close();
-
                 }
-           
-//                if (uri == null && mGalleryFileName != null) {
-//                    uri = Uri.fromFile(new File(mGalleryFileName));
-//                }
-                
-                File file = new File(mGalleryFileName);
-                if (uri != null) {                	
-                	   UploadPicture upload = new UploadPicture(this, mApi, PHOTO_DIR, file);
-                	   upload.execute();
-                   }
                 
             } else {
                 Log.w(TAG, "Unknown Activity Result from mediaImport: "
